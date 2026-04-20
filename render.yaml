@@ -1,0 +1,28 @@
+services:
+  # Python Backend
+  - type: web
+    name: resilience-ai-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHONPATH
+        value: .
+      - key: OPENAI_API_KEY
+        sync: false # User must set this in Render UI
+    region: ohio
+    plan: free
+    rootDir: app/backend
+
+  # React Frontend
+  - type: web
+    name: resilience-ai-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    publishPath: app/frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://resilience-ai-backend.onrender.com # Potential URL
+    region: ohio
+    plan: free
+    rootDir: app/frontend
