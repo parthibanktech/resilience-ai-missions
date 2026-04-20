@@ -1,5 +1,5 @@
 services:
-  # 🧠 Python Backend (FastAPI + LangGraph)
+  # 🧠 Python Backend
   - type: web
     name: resilience-ai-backend
     env: python
@@ -12,15 +12,14 @@ services:
       - key: PYTHONPATH
         value: "."
       - key: OPENAI_API_KEY
-        generateValue: true
+        sync: false
 
-  # 💻 React Frontend (Vite)
-  - type: static
+  # 💻 React Frontend
+  - type: web
     name: resilience-ai-frontend
-    plan: free
+    env: static
     region: ohio
-    rootDir: app/frontend
-    buildCommand: "npm install && npm run build"
+    buildCommand: "cd app/frontend && npm install && npm run build"
     publishPath: "app/frontend/dist"
     envVars:
       - key: VITE_API_URL
