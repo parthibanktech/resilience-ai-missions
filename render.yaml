@@ -1,28 +1,27 @@
 services:
-  # Python Backend
+  # 🧠 Python Backend (FastAPI + LangGraph)
   - type: web
     name: resilience-ai-backend
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    region: ohio
+    rootDir: app/backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: PYTHONPATH
-        value: .
+        value: "."
       - key: OPENAI_API_KEY
-        sync: false # User must set this in Render UI
-    region: ohio
-    plan: free
-    rootDir: app/backend
+        generateValue: true
 
-  # React Frontend
-  - type: web
+  # 💻 React Frontend (Vite)
+  - type: static
     name: resilience-ai-frontend
-    env: static
-    buildCommand: npm install && npm run build
-    publishPath: app/frontend/dist
+    plan: free
+    region: ohio
+    rootDir: app/frontend
+    buildCommand: "npm install && npm run build"
+    publishPath: "app/frontend/dist"
     envVars:
       - key: VITE_API_URL
-        value: https://resilience-ai-backend.onrender.com # Potential URL
-    region: ohio
-    plan: free
-    rootDir: app/frontend
+        value: "https://resilience-ai-backend.onrender.com"
